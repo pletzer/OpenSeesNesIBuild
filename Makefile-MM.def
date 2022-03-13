@@ -165,7 +165,7 @@ ITPACK_LIBRARY  = $(HOME)/lib/libItpack.a
 CSPARSE_LIBRARY = $(HOME)/lib/libcsparse.a
 TCL_LIBRARY     = -framework Tcl -framework Tk
 TCL_DIST_LIBRARY = $(HOME)/lib/libOpenSeesTclCommands.a
-PYTHON_VENV = /Users/maximmillen/git/uni-repos/venv37_shared
+#PYTHON_VENV = /Users/maximmillen/git/uni-repos/venv37_shared
 
 PYTHON_LIBRARY = /home/mdm95/.conda/envs/cenv/lib/libpython3.9.so
 
@@ -208,22 +208,13 @@ WIPE_LIBS = $(FE_LIBRARY) \
 # %---------------------------------------------------------%
 
 # Compilers
-ifeq ($(PROGRAMMING_MODE), SEQUENTIAL)
-CC++	= libstdc++11 -std=c++14
-CC      = gcc  -std=c18 -Wimplicit-function-declaration
-FC	    = gfortran
 
-LINKER    = $(CC++)
-LINKFLAGS = -Wl
-
-else
 CC++  = mpic++ -std=c++14
 CC    = mpicc  -std=c18 -Wimplicit-function-declaration
 FC	  = mpif90
 
 LINKER    = $(CC++)
 LINKFLAGS =
-endif
 
 AR		    = ar
 ARFLAGS		= cqls
@@ -251,11 +242,10 @@ LINKFLAGS       = -g -pg
 else
 ifeq ($(INTERPRETER_LANGUAGE), PYTHON)
 C++FLAGS         = -D_LINUX -D_UNIX  -D_TCL85 -D_AMDn -D_MACOSX \
-	-DPYTHON_EXECUTABLE=$(PYTHON_VENV)/bin/python \
 	$(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
-	$(PROGRAMMING_FLAG) -g -O0
+	$(PROGRAMMING_FLAG) -g -O0 -fPIC
 CFLAGS          = -Wall -g -O0 -DUSE_VENDOR_BLAS -D_USE_METIS_5p1
-FFLAGS          = -Wall -g -O0
+FFLAGS          = -Wall -g -O0 -fPIC
 
 # Linker
 LINKER          = $(CC++)
@@ -327,7 +317,7 @@ SCALAPACK = YES
 SCALAPACK_INCLUDE =
 SCALAPACK_FLAG = -D_SCALAP
 SCALAPACK_DIR =
-SCALAPACK_LIB = -lscalapack -lveclibfort
+SCALAPACK_LIB = $(SCALAPACK_LIBRARIES)
 
 # Use Mumps from Homebrew
 MUMPS = YES
@@ -384,7 +374,7 @@ MACHINE_INCLUDES        = -I/usr/include \
               -I$(FE)/../OTHER/SuperLU_DIST_4.3/SRC \
 			  -I$(HOME)/include -I$(HOME)/blitz \
 			  $(MUMPS_INCLUDE) -I$(CUDA_DIR)/include \
-			  -I(METIS_PARA_DIR)include/
+			  -I$(METIS_PARA_DIR)include/
 
 # this file contains all the OpenSees/SRC includes
 include $(FE)/Makefile.incl
