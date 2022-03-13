@@ -91,7 +91,6 @@ BASE = /usr
 
 FE	 = $(HOME)/SRC
 
-# Use BLAS,CBLAS, and LAPACK from APPLE Accelerate Library
 BLASdir         = $(HOME)/OTHER/BLAS
 CBLASdir        = $(HOME)/OTHER/CBLAS
 LAPACKdir       = $(HOME)/OTHER/LAPACK
@@ -327,9 +326,6 @@ SHELL       = /bin/sh
 SCALAPACK = YES
 SCALAPACK_INCLUDE =
 SCALAPACK_FLAG = -D_SCALAP
-#SCALAPACK_DIR = /usr/local/Cellar/scalapack/2.0.2_6/
-#SCALAPACK_LIB = -L$(SCALAPACK_DIR)/lib \
-#				-lscalapack -lreflapack -lrefblas
 SCALAPACK_DIR =
 SCALAPACK_LIB = -lscalapack -lveclibfort
 
@@ -344,49 +340,8 @@ MUMPS_LIB = $(FE)/system_of_eqn/linearSOE/mumps/MumpsSOE.o \
              $(FE)/system_of_eqn/linearSOE/mumps/MumpsParallelSolver.o \
              -L$(MUMPS_DIR)/lib -ldmumps -lmumps_common -lpord
 
-ifeq ($(PROGRAMMING_MODE), SEQUENTIAL)
-SCALAPACK = NO
-SCALAPACK_DIR =
-SCALAPACK_LIB =
-SCALAPACK_FLAG =
 
-MUMPS = NO
-MUMPS_DIR =
-MUMPS_FLAG =
-MUMPS_INCLUDE =
-MUMPS_LIB =
-endif
-
-# Add '-L/usr/local/lib' to link Homebrew-installed libraries
-MACHINE_LINKLIBS  = -L$(BASE)/lib -L/usr/local/lib -L$(HOME)/lib
-
-HAVE_CUDA = NO
-CUDA_DIR =
-CUDA_FLAG =
-CUDA_LIB =
-
-ifeq ($(HAVE_CUDA),YES)
-CUDA_DIR = /usr/local/cuda
-CUDA_FLAG = -D_CUDA
-CUDA_LIB = $(FE)/system_of_eqn/linearSOE/bandGEN/BandGenLinSOE_Single.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/BandGenLinLapackSolver_Single.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/sgbsv.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/sgbtrs.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/sgbtrf.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/sgbtf2.o \
-	$(FE)/system_of_eqn/linearSOE/bandGEN/slaswp.o \
-	-L$(CUDA_DIR)/lib -cublas -lcuda \
-	-L/usr/local/scalapack_installer_0.91/lib \
-	-lrefblas
-
-CUDA_INCLUDE = -I$(CUDA_DIR)/include
-endif
-
-
-#FORTO = $(LAPACKdir)/fortran.o
-FORTO =
-
-# Link Homebrew gfortran library
+MACHINE_LINKLIBS  =
 
 MACHINE_NUMERICAL_LIBS  =  \
 		$(ARPACK_LIBRARY) \
@@ -402,33 +357,18 @@ MACHINE_NUMERICAL_LIBS  =  \
 		$(FORTO) \
 		$(CUDA_LIB) \
 		$(RELIABILITY_LIBRARY) \
-		-ldl -L/usr/local/opt/gcc/lib/gcc/10/ -lgfortran
+		-lm -lc -ldl -lgfortran
 
 # -ldl -lgcc -lgfortran
 # -ldl -L/usr/local/opt/gcc/lib/gcc/10/gcc/10/ -lgfortran
-# Use BLAS,CBLAS, and LAPACK from APPLE Accelerate Library
-MACHINE_SPECIFIC_LIBS = $(AGL_OBJS) -L/usr/local/opt/openssl/lib -lssl -lcrypto \
-						-framework Accelerate
+MACHINE_SPECIFIC_LIBS =
 
-METIS_PARA_LIB = /usr/local/lib/libmetis.dylib
+METIS_PARA_DIR = /opt/nesi/CS400_centos7_bdw/METIS/5.1.0-GCCcore-9.2.0/
 
 PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
-	$(FE)/system_of_eqn/linearSOE/sparseGEN/SparseGenColLinSOE.o \
-	$(LAPACK_LIB) $(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(SCALAPACK_LIB) $(METIS_PARA_LIB) \
-	-lmpi_cxx -lmpi_mpifh -lmpi -lopen-rte -lopen-pal
-
-
-ifeq ($(PROGRAMMING_MODE), PARALLEL_INTERPRETERS)
-PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
-	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
-	$(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(SCALAPACK_LIB) $(METIS_PARA_LIB) \
-	-lmpi_mpifh -lmpi -lopen-rte -lopen-pal \
-	/usr/local/Cellar/brewsci-parmetis/4.0.3_1/lib/libparmetis.dylib  /usr/local/lib/libmetis.dylib
-else
-PARALLEL_LIB =
-endif
-
+	$(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(SCALAPACK_LIB) $(METIS_PARA_DIR)/lib/libmetis.a \
+	-lmpi_mpifh -lmpi -lopen-rte -lopen-pal
 
 # %---------------------------------------------------------%
 # | SECTION 7: INCLUDE FILES                                |
@@ -437,26 +377,14 @@ endif
 # | compilation.                                            |
 # %---------------------------------------------------------%
 
-ifeq ($(PROGRAMMING_MODE),  SEQUENTIAL)
 MACHINE_INCLUDES        = -I/usr/include \
+			  -I$(BASE)/include \
 			  -I/usr/local/include \
-			  -I$(BASE)/include \
 			  -I/usr/include/cxx \
-			  -I$(HOME)/include -I$(HOME)/blitz \
-			  -I$(CUDA_DIR)/include \
-			  -I/usr/local/opt/openssl/include
-else
-MACHINE_INCLUDES        = -I/usr/include \
-			  -I$(BASE)/include \
-			  -I/usr/include/cxx \
-			  -I/opt/local/include \
               -I$(FE)/../OTHER/SuperLU_DIST_4.3/SRC \
 			  -I$(HOME)/include -I$(HOME)/blitz \
 			  $(MUMPS_INCLUDE) -I$(CUDA_DIR)/include \
-			  -I/usr/local/Cellar/metis/5.1.0/include/ \
-              -I/usr/local/opt/openssl/include
-
-endif
+			  -I(METIS_PARA_DIR)include/
 
 # this file contains all the OpenSees/SRC includes
 include $(FE)/Makefile.incl
