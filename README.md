@@ -23,13 +23,19 @@ Load a few modules
 ```
 . start_ml_MM.sh
 ```
-cd OpenSees/
+
+Compile OpenSees for Python
+```
+cd ../OpenSees/
 mkdir lib
 make python
+```
 
 # Error if rebuilding
 
 UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command
 
+```
 cd OpenSees/SRC/material/nD/UANDESmaterials/
 make wipe
+```
