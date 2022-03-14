@@ -91,9 +91,9 @@ BASE = /usr
 
 FE	 = $(HOME)/SRC
 
-BLASdir         =
-CBLASdir        =
-LAPACKdir       =
+BLASdir         = $(HOME)/OTHER/BLAS
+CBLASdir        = $(HOME)/OTHER/CBLAS
+LAPACKdir       = $(HOME)/OTHER/LAPACK
 SUPERLUdir      = $(HOME)/OTHER/SuperLU_5.1.1/SRC
 SUPERLU_DISTdir = $(HOME)/OTHER/SuperLU_DIST_4.3/SRC
 ARPACKdir       = $(HOME)/OTHER/ARPACK
@@ -106,7 +106,10 @@ SRCdir          = $(HOME)/SRC
 PYdir          = $(HOME)/SRC/interpreter
 
 
-DIRS = $(SUPERLUdir) \
+DIRS = $(BLASdir) \
+       $(CBLASdir) \
+       $(LAPACKdir) \
+	   $(SUPERLUdir) \
        $(SUPERLU_DISTdir) \
        $(ARPACKdir) \
        $(UMFPACKdir) \
@@ -116,7 +119,10 @@ DIRS = $(SUPERLUdir) \
        $(SRCdir)
 
 ifeq ($(PROGRAMMING_MODE), SEQUENTIAL)
-DIRS = $(SUPERLUdir) \
+DIRS = $(BLASdir) \
+       $(CBLASdir) \
+       $(LAPACKdir) \
+	   $(SUPERLUdir) \
        $(ARPACKdir) \
        $(UMFPACKdir) \
        $(METISdir) \
@@ -139,7 +145,7 @@ endif
 # library!!
 #
 # Note: For libraries that will be created (any in DIRS above)
-# make sure the directory exists where you want the library to go!
+# make sure the directory exsists where you want the library to go!
 
 FE_LIBRARY      = $(HOME)/lib/libOpenSees.a
 RELIABILITY_LIBRARY = $(HOME)/lib/libReliability.a
@@ -148,7 +154,7 @@ NDARRAY_LIBRARY = $(HOME)/lib/libndarray.a # BJ_UCD jeremic@ucdavis.edu
 MATMOD_LIBRARY  = $(HOME)/lib/libmatmod.a  # BJ_UCD jeremic@ucdavis.edu
 BJMISC_LIBRARY  = $(HOME)/lib/libBJmisc.a  # BJ_UCD jeremic@ucdavis.edu
 LAPACK_LIBRARY  =
-BLAS_LIBRARY    = 
+BLAS_LIBRARY    =
 CBLAS_LIBRARY   =
 SUPERLU_LIBRARY = $(HOME)/lib/libSuperLU.a
 ARPACK_LIBRARY  = $(HOME)/lib/libArpack.a
@@ -218,7 +224,7 @@ RANLIBFLAGS =
 # Compiler Flags
 #
 # NOTES:
-#    C++ FLAGS TAKE need _UNIX or _WIN32 for preprocessor directives
+#    C++ FLAGS TAKE need _UNIX or _WIN32 for preprocessor dircetives
 #         - the _WIN32 for the Windows95/98 or NT operating system.
 #    C FLAGS used -DUSE_VENDOR_BLAS (needed in SuperLU) if UNIX in C++ FLAGS
 #
@@ -228,8 +234,8 @@ OS_FLAG = -D_MACOSX
 ifeq ($(DEBUG_MODE), DEBUG)
 C++FLAGS = -Wall -D_LINUX -D_UNIX  -D_TCL85  -D_AMDn $(OS_FLAG)\
 	       $(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
-	       $(PROGRAMMING_FLAG) -g -O0
-CFLAGS   = -Wall -O0 -g -DUSE_VENDOR_BLAS
+	       $(PROGRAMMING_FLAG) -g -O3
+CFLAGS   = -Wall -O3 -g -DUSE_VENDOR_BLAS
 FFLAGS   = -Wall -O -DCUBLAS -x f77-cpp-input --no-second-underscore
 LINKFLAGS       = -g -pg
 
@@ -237,9 +243,9 @@ else
 ifeq ($(INTERPRETER_LANGUAGE), PYTHON)
 C++FLAGS         = -D_LINUX -D_UNIX  -D_TCL85 -D_AMDn -D_MACOSX \
 	$(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
-	$(PROGRAMMING_FLAG) -g -O0 -fPIC
-CFLAGS          = -Wall -g -O0 -DUSE_VENDOR_BLAS -D_USE_METIS_5p1  -fPIC
-FFLAGS          = -Wall -g -O0 -fPIC
+	$(PROGRAMMING_FLAG) -g -O3 -fPIC
+CFLAGS          = -Wall -g -O3 -DUSE_VENDOR_BLAS -D_USE_METIS_5p1  -fPIC
+FFLAGS          = -Wall -g -O3 -fPIC
 
 # Linker
 LINKER          = $(CC++)
@@ -307,22 +313,18 @@ SHELL       = /bin/sh
 # %---------------------------------------------------------%
 
 SCALAPACK = YES
-SCALAPACK_DIR = /opt/nesi/CS400_centos7_bdw/imkl/2020.0.166-gimpi-2020a/mkl/
+SCALAPACK_DIR = $(EBROOTIMKL)/mkl/
 SCALAPACK_INCLUDE = $(SCALAPACK_DIR)/include
 SCALAPACK_FLAG = -D_SCALAP
 SCALAPACK_LIB = $(SCALAPACK_DIR)/lib/intel64_lin/
 
 # Use Mumps from Homebrew
 MUMPS = YES
-MUMPS_DIR = /opt/nesi/CS400_centos7_bdw/MUMPS/5.3.1-gimkl-2020a-METIS-5.1.0
+MUMPS_DIR = $(EBROOTMUMPS) 
 MUMPS_FLAG = -D_MUMPS -D_OPENMPI
-MUMPS_INCLUDE = -I$(MUMPS_DIR)/include
+#MUMPS_INCLUDE = -I$(MUMPS_DIR)/include
+MUMPS_INCLUDE = -I$(EBROOTMUMPS)/include
 MUMPS_LIB = -L$(MUMPS_DIR)/lib -L$(SCALAPACK_LIB) -ldmumps -lmumps_common -lpord -l$(SCALAPACK_DIR)/lib/intel64_lin/libmkl_scalapack.a
-
-# https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-link-line-advisor.html
-MKL_LIBRARIES = -L$(EBROOTIMKL)/mkl/lib/intel64 -lmkl_scalapack_ilp64 \
-                -Wl,--no-as-needed -lmkl_gf_ilp64 -lmkl_sequential \
-                -lmkl_core -lmkl_blacs_intelmpi_ilp64
 
 
 MACHINE_LINKLIBS  =
@@ -333,7 +335,6 @@ MACHINE_NUMERICAL_LIBS  =  \
 		$(UMFPACK_LIBRARY) \
 	    $(AMD_LIBRARY) \
 	    $(ITPACK_LIBRARY) \
-	    $(MKL_LIBRARIES) \
 	    $(LAPACK_LIBRARY) \
 	    $(CSPARSE_LIBRARY) \
 		$(BLAS_LIBRARY) \
@@ -348,7 +349,7 @@ MACHINE_NUMERICAL_LIBS  =  \
 # -ldl -L/usr/local/opt/gcc/lib/gcc/10/gcc/10/ -lgfortran
 MACHINE_SPECIFIC_LIBS =
 
-METIS_PARA_DIR = /opt/nesi/CS400_centos7_bdw/METIS/5.1.0-GCCcore-9.2.0/
+METIS_PARA_DIR = $(EBROOTMETIS)
 
 PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
@@ -368,19 +369,15 @@ MACHINE_INCLUDES        = -I/usr/include \
 			  -I/usr/include/cxx \
               -I$(FE)/../OTHER/SuperLU_DIST_4.3/SRC \
 			  -I$(MUMPS_INCLUDE) -I$(SCALAPACK_INCLUDE) \
-			  -I$(METIS_PARA_DIR)include/
+			  -I$(METIS_PARA_DIR)/include/
 
 # this file contains all the OpenSees/SRC includes
 include $(FE)/Makefile.incl
 
 
-TCL_INCLUDES = -I/opt/nesi/CS400_centos7_bdw/Miniconda3/4.10.3/include
-#TCL_INCLUDES = -I/Library/Frameworks/Tcl.framework/Headers -I/Library/Frameworks/Tk.framework/Headers \
-#                -I/Library/Frameworks/Tcl.framework/Versions/Current/
-#PYTHON_INCLUDES = -I/usr/local/opt/python/Frameworks/Python.framework/Versions/3.9/include/python3.9m \
-#               -I/usr/local/opt/python/Frameworks/Python.framework/Versions/3.9/include/python3.9m/internal
+TCL_INCLUDES = -I$(EBROOTMINICONDA3)/include
 
-PYTHON_INCLUDES = -I/home/mdm95/.conda/envs/cenv/include/python3.9
+PYTHON_INCLUDES = -I$(EBROOTMINICONDA3)/include/python3.9/
 
 INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDES)
 
