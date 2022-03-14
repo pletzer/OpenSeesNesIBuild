@@ -167,7 +167,7 @@ TCL_LIBRARY     = -framework Tcl -framework Tk
 TCL_DIST_LIBRARY = $(HOME)/lib/libOpenSeesTclCommands.a
 #PYTHON_VENV = /Users/maximmillen/git/uni-repos/venv37_shared
 
-PYTHON_LIBRARY = /home/mdm95/.conda/envs/cenv/lib/libpython3.9.so
+#PYTHON_LIBRARY = /home/mdm95/.conda/envs/cenv/lib/libpython3.9.so
 
 DISTRIBUTED_SUPERLU_LIBRARY = $(HOME)/lib/libDistributedSuperLU.a
 
