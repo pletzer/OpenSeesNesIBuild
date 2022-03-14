@@ -319,6 +319,8 @@ MUMPS_FLAG = -D_MUMPS -D_OPENMPI
 MUMPS_INCLUDE = -I$(MUMPS_DIR)/include
 MUMPS_LIB = -L$(MUMPS_DIR)/lib -L$(SCALAPACK_LIB) -ldmumps -lmumps_common -lpord -l$(SCALAPACK_DIR)/lib/intel64_lin/libmkl_scalapack.a
 
+SCOTCH_LIBRARIES = -L$(EBROOTSCOTCH)/lib -lesmumps -lptscotch -lscotch -lscotcherr
+
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-link-line-advisor.html
 MKL_LIBRARIES = -L$(EBROOTIMKL)/mkl/lib/intel64 -lmkl_scalapack_ilp64 \
                 -Wl,--no-as-needed -lmkl_gf_ilp64 -lmkl_sequential \
@@ -328,21 +330,20 @@ MKL_LIBRARIES = -L$(EBROOTIMKL)/mkl/lib/intel64 -lmkl_scalapack_ilp64 \
 MACHINE_LINKLIBS  =
 
 MACHINE_NUMERICAL_LIBS  =  \
+		$(RELIABILITY_LIBRARY) \
 		$(ARPACK_LIBRARY) \
 		$(SUPERLU_LIBRARY) \
 		$(UMFPACK_LIBRARY) \
 	    $(AMD_LIBRARY) \
 	    $(ITPACK_LIBRARY) \
-	    $(MKL_LIBRARIES) \
 	    $(LAPACK_LIBRARY) \
 	    $(CSPARSE_LIBRARY) \
 		$(BLAS_LIBRARY) \
 		$(CBLAS_LIBRARY) \
 		$(GRAPHIC_LIBRARY)\
 		$(FORTO) \
-		$(CUDA_LIB) \
-		$(RELIABILITY_LIBRARY) \
-		-lm -lc -ldl -lgfortran
+		$(CUDA_LIB)
+		
 
 # -ldl -lgcc -lgfortran
 # -ldl -L/usr/local/opt/gcc/lib/gcc/10/gcc/10/ -lgfortran
@@ -353,6 +354,9 @@ METIS_PARA_DIR = /opt/nesi/CS400_centos7_bdw/METIS/5.1.0-GCCcore-9.2.0/
 PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
 	$(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(METIS_PARA_DIR)/lib/libmetis.a \
+	$(SCOTCH_LIBRARIES) \
+	$(MKL_LIBRARIES) \
+	-lm -lc -ldl -lgfortran \
 	-lmpi_mpifh -lmpi -lopen-rte -lopen-pal
 
 # %---------------------------------------------------------%
