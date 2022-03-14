@@ -29,7 +29,22 @@ Compile OpenSees for Python
 cd ../OpenSees/
 export CHOME=$(pwd)
 mkdir lib
-make python
+```
+
+To clean the directory from a previous build (optional):
+```
+make wipe
+```
+
+Now build:
+```
+make python -j 4
+```
+
+Test that you can import the `opensees` module:
+```
+export PYTHONPATH=$(pwd)/SRC/interpreter/:$PYTHONPATH
+python -c "import opensees"
 ```
 
 # Error if rebuilding
