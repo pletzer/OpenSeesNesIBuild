@@ -244,7 +244,7 @@ ifeq ($(INTERPRETER_LANGUAGE), PYTHON)
 C++FLAGS         = -D_LINUX -D_UNIX  -D_TCL85 -D_AMDn -D_MACOSX \
 	$(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
 	$(PROGRAMMING_FLAG) -g -O0 -fPIC
-CFLAGS          = -Wall -g -O0 -DUSE_VENDOR_BLAS -D_USE_METIS_5p1
+CFLAGS          = -Wall -g -O0 -DUSE_VENDOR_BLAS -D_USE_METIS_5p1  -fPIC
 FFLAGS          = -Wall -g -O0 -fPIC
 
 # Linker
@@ -324,11 +324,7 @@ MUMPS = YES
 MUMPS_DIR = /opt/nesi/CS400_centos7_bdw/MUMPS/5.3.1-gimkl-2020a-METIS-5.1.0
 MUMPS_FLAG = -D_MUMPS -D_OPENMPI
 MUMPS_INCLUDE = -I$(MUMPS_DIR)/include
-MUMPS_LIB = $(FE)/system_of_eqn/linearSOE/mumps/MumpsSOE.o \
-             $(FE)/system_of_eqn/linearSOE/mumps/MumpsSolver.o \
-             $(FE)/system_of_eqn/linearSOE/mumps/MumpsParallelSOE.o \
-             $(FE)/system_of_eqn/linearSOE/mumps/MumpsParallelSolver.o \
-             -L$(MUMPS_DIR)/lib -ldmumps -lmumps_common -lpord
+MUMPS_LIB = -L$(MUMPS_DIR)/lib -ldmumps -lmumps_common -lpord
 
 
 MACHINE_LINKLIBS  =

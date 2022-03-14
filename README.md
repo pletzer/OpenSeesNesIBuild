@@ -10,3 +10,10 @@ run: `. start_ml_MM.sl`
 cd OpenSees/
 mkdir lib
 make python
+
+# Error if rebuilding
+
+UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command
+
+cd OpenSees/SRC/material/nD/UANDESmaterials/
+make wipe
