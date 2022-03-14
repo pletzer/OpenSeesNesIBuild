@@ -4,9 +4,25 @@ Instructions on how to build parallel OpenSees for Python on NeSI platform
 ## Build steps
 
 Clone OpenSees Repo
+```
+git clone https://github.com/OpenSees/OpenSees
+```
+
 Clone this repo
-Copy Makefile to Makefile.def in OpenSees repo root
-run: `. start_ml_MM.sl`
+```
+git clone git@github.com:pletzer/OpenSeesNesIBuild.git
+cd OpenSeesNesIBuild
+```
+
+Copy one of the Makefile.def files under `OpenSeesNesIBuild` to Makefile.def in OpenSees repo root
+```
+cp Makefile-MM.def ../OpenSees/Makefile.def
+```
+
+Load a few modules
+```
+. start_ml_MM.sh
+```
 cd OpenSees/
 mkdir lib
 make python
