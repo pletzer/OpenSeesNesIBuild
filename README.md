@@ -27,6 +27,7 @@ Load a few modules
 Compile OpenSees for Python
 ```
 cd ../OpenSees/
+export CHOME=$(pwd)
 mkdir lib
 make python
 ```
