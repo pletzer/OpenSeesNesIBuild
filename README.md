@@ -31,11 +31,12 @@ export CHOME=$(pwd)
 mkdir lib
 ```
 
-To clean the directory from a previous build:
+To clean the directory from a previous build (optional):
 ```
 make wipe
 ```
-No build:
+
+Now build:
 ```
 make python -j 4
 ```
