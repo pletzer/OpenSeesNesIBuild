@@ -225,7 +225,7 @@ RANLIBFLAGS =
 ifeq ($(DEBUG_MODE), DEBUG)
 C++FLAGS = -Wall -D_LINUX -D_UNIX  -D_TCL85  -D_AMDn \
 	       $(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
-	       $(PROGRAMMING_FLAG) -g -O0
+	       $(PROGRAMMING_FLAG) -g -O3
 CFLAGS   = -Wall -O0 -g -DUSE_VENDOR_BLAS
 FFLAGS   = -Wall -O -DCUBLAS -x f77-cpp-input --no-second-underscore
 LINKFLAGS       = -g -pg
@@ -351,8 +351,7 @@ METIS_PARA_DIR = /opt/nesi/CS400_centos7_bdw/METIS/5.1.0-GCCcore-9.2.0/
 PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
 	$(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(METIS_PARA_DIR)/lib/libmetis.a \
-	$(SCOTCH_LIBRARIES) \
-	$(MKL_LIBRARIES) \
+	$(SCOTCH_LIBRARIES) $(MKL_LIBRARIES) \
 	-lm -lc -ldl -lgfortran \
 	-lmpi_mpifh -lmpi -lopen-rte -lopen-pal
 
@@ -379,4 +378,4 @@ TCL_INCLUDES = -I/opt/nesi/CS400_centos7_bdw/Miniconda3/4.10.3/include
 
 PYTHON_INCLUDES = -I$(EBROOTMINICONDA3)/include/python3.9
 
-INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDES)
+INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDE
