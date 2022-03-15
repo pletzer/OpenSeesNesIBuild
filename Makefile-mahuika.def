@@ -378,6 +378,10 @@ include $(FE)/Makefile.incl
 
 TCL_INCLUDES = -I$(EBROOTMINICONDA3)/include
 
-PYTHON_INCLUDES = -I$(EBROOTMINICONDA3)/include/python3.9
+# find out where Python.h is installed from the current python command on Linux
+PYTHON_EXE := $(shell which python)
+PYTHON_BINDIR := $(dir $(PYTHON_EXE))
+PYTHON_VER := $(shell python -c "import sys; print('%d.%d' % sys.version_info[:2])")
+PYTHON_INCLUDES := $(PYTHON_BINDIR)../include/python$(PYTHON_VER)
 
 INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDES)
