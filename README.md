@@ -16,7 +16,7 @@ cd OpenSeesNesIBuild
 
 Copy one of the Makefile.def files under `OpenSeesNesIBuild` to Makefile.def in OpenSees repo root
 ```
-cp Makefile-MM.def ../OpenSees/Makefile.def
+cp Makefile-mahuika.def ../OpenSees/Makefile.def
 ```
 
 Load a few modules
