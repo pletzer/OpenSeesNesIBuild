@@ -222,11 +222,10 @@ RANLIBFLAGS =
 #         - the _WIN32 for the Windows95/98 or NT operating system.
 #    C FLAGS used -DUSE_VENDOR_BLAS (needed in SuperLU) if UNIX in C++ FLAGS
 #
-OS_FLAG = -D_MACOSX
 
 # modified as optimizaton currently causing problems with Steeln01 code
 ifeq ($(DEBUG_MODE), DEBUG)
-C++FLAGS = -Wall -D_LINUX -D_UNIX  -D_TCL85  -D_AMDn $(OS_FLAG)\
+C++FLAGS = -Wall -D_LINUX -D_UNIX  -D_TCL85  -D_AMDn \
 	       $(GRAPHIC_FLAG) $(RELIABILITY_FLAG) $(DEBUG_FLAG) $(MUMPS_FLAG) \
 	       $(PROGRAMMING_FLAG) -g -O0
 CFLAGS   = -Wall -O0 -g -DUSE_VENDOR_BLAS
@@ -379,10 +378,6 @@ include $(FE)/Makefile.incl
 
 
 TCL_INCLUDES = -I/opt/nesi/CS400_centos7_bdw/Miniconda3/4.10.3/include
-#TCL_INCLUDES = -I/Library/Frameworks/Tcl.framework/Headers -I/Library/Frameworks/Tk.framework/Headers \
-#                -I/Library/Frameworks/Tcl.framework/Versions/Current/
-#PYTHON_INCLUDES = -I/usr/local/opt/python/Frameworks/Python.framework/Versions/3.9/include/python3.9m \
-#               -I/usr/local/opt/python/Frameworks/Python.framework/Versions/3.9/include/python3.9m/internal
 
 PYTHON_INCLUDES = -I/home/mdm95/.conda/envs/cenv/include/python3.9
 

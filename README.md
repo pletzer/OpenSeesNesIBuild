@@ -47,6 +47,13 @@ export PYTHONPATH=$(pwd)/SRC/interpreter/:$PYTHONPATH
 python -c "import opensees"
 ```
 
+Test that MP functionality works
+```
+cp ../OpenSeesNesIBuild/example_mpi_paralleltruss_explicit.py example_mpi_paralleltruss_explicit.py
+cp ../OpenSeesNesIBuild/run_p2nt.sl run_p2nt.sl
+sbatch run_p2nt.sl example_mpi_paralleltruss_explicit.py
+```
+
 # Error if rebuilding
 
 UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command

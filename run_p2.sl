@@ -6,4 +6,4 @@
 ## END HEADER
 #
 echo "Running file $1"
-mpiexec -np 2 python $1
+srun python $1
