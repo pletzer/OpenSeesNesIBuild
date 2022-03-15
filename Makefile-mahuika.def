@@ -13,7 +13,8 @@
 #
 #  Modified by Seokho Jeong for Mac OS X 10.11 El Capitan with
 #  Accelerate framework and Homebrew
-# Modified by Maxim Millen for Mac OSX 10.15 with Python 3.7
+#  Modified by Maxim Millen for Mac OSX 10.15 with Python 3.7
+#  Modified by Maxim Millen and Alex Pletzer to build on NeSI's mahuika HPC
 #
 ############################################################################
 # Prerequisites
@@ -347,7 +348,7 @@ MACHINE_NUMERICAL_LIBS  =  \
 # -ldl -L/usr/local/opt/gcc/lib/gcc/10/gcc/10/ -lgfortran
 MACHINE_SPECIFIC_LIBS =
 
-METIS_PARA_DIR = /opt/nesi/CS400_centos7_bdw/METIS/5.1.0-GCCcore-9.2.0/
+METIS_PARA_DIR = $(EBROOTMETIS)
 
 PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
@@ -375,8 +376,8 @@ MACHINE_INCLUDES        = -I/usr/include \
 include $(FE)/Makefile.incl
 
 
-TCL_INCLUDES = -I/opt/nesi/CS400_centos7_bdw/Miniconda3/4.10.3/include
+TCL_INCLUDES = -I$(EBROOTMINICONDA3)/include
 
 PYTHON_INCLUDES = -I$(EBROOTMINICONDA3)/include/python3.9
 
-INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDE
+INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDES)
