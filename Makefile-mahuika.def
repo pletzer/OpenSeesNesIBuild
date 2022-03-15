@@ -304,7 +304,7 @@ SHELL       = /bin/sh
 # %---------------------------------------------------------%
 
 SCALAPACK = YES
-SCALAPACK_DIR = $($EBROOTIMKL)/mkl/
+SCALAPACK_DIR = $(EBROOTIMKL)/mkl
 SCALAPACK_INCLUDE = $(SCALAPACK_DIR)/include
 SCALAPACK_FLAG = -D_SCALAP
 SCALAPACK_LIB = $(SCALAPACK_DIR)/lib/intel64_lin/
