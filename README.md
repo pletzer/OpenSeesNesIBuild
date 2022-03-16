@@ -24,6 +24,11 @@ Load a few modules
 . start_ml_MM.sh
 ```
 
+Decide which python to use, e.g.
+```
+ml Miniconda3
+```
+
 Compile OpenSees for Python
 ```
 cd ../OpenSees/

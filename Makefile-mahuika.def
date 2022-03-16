@@ -312,7 +312,7 @@ SCALAPACK_LIB = $(SCALAPACK_DIR)/lib/intel64_lin/
 
 # Use Mumps from Homebrew
 MUMPS = YES
-MUMPS_DIR = $($EBROOTMUMPS)
+MUMPS_DIR = $(EBROOTMUMPS)
 MUMPS_FLAG = -D_MUMPS -D_OPENMPI
 MUMPS_INCLUDE = -I$(MUMPS_DIR)/include
 MUMPS_LIB = -L$(MUMPS_DIR)/lib -L$(SCALAPACK_LIB) -ldmumps -lmumps_common -lpord -l$(SCALAPACK_DIR)/lib/intel64_lin/libmkl_scalapack.a
@@ -370,7 +370,7 @@ MACHINE_INCLUDES        = -I/usr/include \
 			  -I/usr/include/cxx \
               -I$(FE)/../OTHER/SuperLU_DIST_4.3/SRC \
 			  -I$(MUMPS_INCLUDE) -I$(SCALAPACK_INCLUDE) \
-			  -I$(METIS_PARA_DIR)include/
+			  -I$(METIS_PARA_DIR)/include/
 
 # this file contains all the OpenSees/SRC includes
 include $(FE)/Makefile.incl
@@ -378,6 +378,10 @@ include $(FE)/Makefile.incl
 
 TCL_INCLUDES = -I$(EBROOTMINICONDA3)/include
 
-PYTHON_INCLUDES = -I$(EBROOTMINICONDA3)/include/python3.9
+# find out where Python.h is installed from the current python command on Linux
+PYTHON_EXE := $(shell which python)
+PYTHON_BINDIR := $(dir $(PYTHON_EXE))
+PYTHON_VER := $(shell python -c "import sys; print('%d.%d' % sys.version_info[:2])")
+PYTHON_INCLUDES := -I$(PYTHON_BINDIR)../include/python$(PYTHON_VER)
 
 INCLUDES = $(TCL_INCLUDES) $(FE_INCLUDES) $(MACHINE_INCLUDES) $(PYTHON_INCLUDES)
