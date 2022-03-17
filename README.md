@@ -19,7 +19,7 @@ Copy one of the Makefile.def files under `OpenSeesNesIBuild` to Makefile.def in 
 cp Makefile-mahuika.def ../OpenSees/Makefile.def
 ```
 
-Load a few modules
+If on mahuika, load a few modules
 ```
 . start_ml_MM.sh
 ```
