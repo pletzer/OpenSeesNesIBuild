@@ -45,7 +45,7 @@ ops.numberer('ParallelPlain')
 ops.test('NormDispIncr', 1e-6, 6, 2)
 ops.algorithm('Linear')
 etype = 'central_difference'
-etype = 'explicit_difference'  # Comment out this line to run with central difference
+# etype = 'explicit_difference'  # Comment out this line to run with central difference
 if etype == 'central_difference':
     ops.system('Mumps')
     ops.integrator('CentralDifference')
