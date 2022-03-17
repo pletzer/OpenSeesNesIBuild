@@ -21,6 +21,7 @@ cp Makefile-mahuika.def ../OpenSees/Makefile.def
 
 If on mahuika, load a few modules
 ```
+ml purge
 . start_ml_MM.sh
 ```
 
