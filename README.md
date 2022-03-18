@@ -60,6 +60,24 @@ cp ../OpenSeesNesIBuild/run_p2nt.sl .
 sbatch run_p2nt.sl example_mpi_paralleltruss_explicit.py
 ```
 
+# Installing the Python OpenSees package
+
+```
+mkdir -p OpenSees/SRC/interpreter/custom_openseespy
+cp OpenSees/SRC/interpreter/opensees.so OpenSees/SRC/interpreter/custom_openseespy
+cp OpenSeesNesIBuild/setup.py OpenSees/SRC/interpreter/custom_openseespy
+pip install -e OpenSees/SRC/interpreter/
+python -c "from custom_openseespy import opensees"
+```
+
+# Running more comprehensive tests
+
+```
+cd OpenSeesNesIBuild
+srun --ntasks=2 python example_mpi_paralleltruss_explicit.py
+```
+
+
 # Error if rebuilding
 
 UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command
