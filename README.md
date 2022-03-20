@@ -65,6 +65,7 @@ sbatch run_p2nt.sl example_mpi_paralleltruss_explicit.py
 ```
 cp OpenSeesNesIBuild/setup.py OpenSees/SRC/interpreter/
 mkdir -p OpenSees/SRC/interpreter/custom_openseespy
+mv OpenSees/SRC/interpreter/opensees.so OpenSees/SRC/interpreter/custom_openseespy/
 pip install -e OpenSees/SRC/interpreter/
 python -c "from custom_openseespy import opensees"
 ```
