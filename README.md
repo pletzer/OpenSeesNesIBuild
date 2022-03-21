@@ -53,12 +53,30 @@ export PYTHONPATH=$(pwd)/SRC/interpreter/:$PYTHONPATH
 python -c "import opensees"
 ```
 
-Test that MP functionality works
+Test that the parallel (MP) functionality works
 ```
 cp ../OpenSeesNesIBuild/example_mpi_paralleltruss_explicit.py .
 cp ../OpenSeesNesIBuild/run_p2nt.sl .
 sbatch run_p2nt.sl example_mpi_paralleltruss_explicit.py
 ```
+
+# Installing the Python OpenSees package
+
+```
+cp OpenSeesNesIBuild/setup.py OpenSees/SRC/interpreter/
+mkdir -p OpenSees/SRC/interpreter/custom_openseespy
+mv OpenSees/SRC/interpreter/opensees.so OpenSees/SRC/interpreter/custom_openseespy/
+pip install -e OpenSees/SRC/interpreter/
+python -c "from custom_openseespy import opensees"
+```
+
+# Running more comprehensive tests
+
+```
+cd OpenSeesNesIBuild
+srun --ntasks=2 python example_mpi_paralleltruss_explicit.py
+```
+
 
 # Error if rebuilding
 
