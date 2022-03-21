@@ -321,8 +321,8 @@ SCOTCH_LIBRARIES = -L$(EBROOTSCOTCH)/lib -lesmumps -lptscotch -lscotch -lscotche
 
 # the following tool can be used to figure out which MKL libraries to link against
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-link-line-advisor.html
-MKL_LIBRARIES = -L$(EBROOTIMKL)/mkl/lib/intel64 -lmkl_scalapack_ilp64 \
-                -Wl,--no-as-needed -lmkl_gf_ilp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_ilp64
+MKL_LIBRARIES = -L$(EBROOTIMKL)/mkl/lib/intel64 -lmkl_scalapack_lp64 \
+                -lmkl_blacs_intelmpi_lp64 -lmkl_core -lmkl_gnu_thread -lmkl_rt
 
 
 MACHINE_LINKLIBS  =
@@ -353,7 +353,7 @@ PARALLEL_LIB = 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.o \
 	$(FE)/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.o \
 	$(DISTRIBUTED_SUPERLU_LIBRARY) $(MUMPS_LIB) $(METIS_PARA_DIR)/lib/libmetis.a \
 	$(SCOTCH_LIBRARIES) $(MKL_LIBRARIES) \
-	-lm -lc -ldl -lgfortran 
+	-lgfortran -lgomp -lm -lc -ldl
 
 # %---------------------------------------------------------%
 # | SECTION 7: INCLUDE FILES                                |

@@ -18,7 +18,7 @@ ops.uniaxialMaterial('Elastic', 1, 3000.0)
 
 if pid == 0:
     ops.node(1, 0.0, 0.0)
-    ops.node(4, 72.0, 96.0)
+    ops.node(4, 72.0, 96.0) # appears in procs 0 and 1
 
     ops.fix(1, 1, 1)
     ops.mass(4, 100.0, 100.0)
@@ -47,8 +47,11 @@ ops.algorithm('Linear')
 etype = 'central_difference'
 # etype = 'explicit_difference'  # Comment out this line to run with central difference
 if etype == 'central_difference':
-    ops.system('Mumps')
-    ops.integrator('CentralDifference')
+    #ops.system('Mumps')
+    ops.system('SparseGeneral') # Intel MKL ERROR: Parameter 6 was incorrect on entry to DTRSV
+    #ops.system('FullGeneral') # Intel MKL ERROR: Parameter 4 was incorrect on entry to DGESV
+    #ops.system('ParallelProfileSPD') # looks good
+    ops.integrator('CentralDifference') # works
 else:
     # ops.system('Mumps')
     ops.system('MPIDiagonal')  # Can use Mumps here but not sure if it scales as well
