@@ -47,9 +47,9 @@ ops.algorithm('Linear')
 etype = 'central_difference'
 # etype = 'explicit_difference'  # Comment out this line to run with central difference
 if etype == 'central_difference':
-    #ops.system('Mumps')
-    ops.system('SparseGeneral') # Intel MKL ERROR: Parameter 6 was incorrect on entry to DTRSV
-    #ops.system('FullGeneral') # Intel MKL ERROR: Parameter 4 was incorrect on entry to DGESV
+    ops.system('Mumps') # Invalid communicator
+    #ops.system('SparseGeneral') # runs
+    #ops.system('FullGeneral') # runs
     #ops.system('ParallelProfileSPD') # looks good
     ops.integrator('CentralDifference') # works
 else:
