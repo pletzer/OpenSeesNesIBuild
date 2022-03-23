@@ -1,5 +1,5 @@
-# import opensees as ops
-from custom_openseespy import opensees as ops
+# import custom_openseespy.opensees as ops
+import opensees as ops
 
 pid = ops.getPID()
 print('pid: ', pid)
@@ -57,11 +57,10 @@ else:
     ops.system('MPIDiagonal')  # Can use Mumps here but not sure if it scales as well
     ops.integrator('ExplicitDifference')
 ops.analysis('Transient')
-for i in range(30):
-    print(f'######################################## run {i} ##')
-    ops.analyze(1, 0.000001)
+for i in range(2999):  # one less step for cen-diff
+    # print(f'######################################## run {i} ##')
+    ops.analyze(1, 0.00001)
 print('PPP')
-ops.analyze(20, 0.00001)
 
 print(pid, ' Node 4: ', [ops.nodeCoord(4), ops.nodeDisp(4)])
 print(pid, " COMPLETED")

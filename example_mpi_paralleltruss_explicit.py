@@ -1,5 +1,5 @@
-# import opensees as ops
-from custom_openseespy import opensees as ops
+# import custom_openseespy.opensees as ops
+import opensees as ops
 
 pid = ops.getPID()
 print('pid: ', pid)
@@ -18,7 +18,7 @@ ops.uniaxialMaterial('Elastic', 1, 3000.0)
 
 if pid == 0:
     ops.node(1, 0.0, 0.0)
-    ops.node(4, 72.0, 96.0)
+    ops.node(4, 72.0, 96.0) # appears in procs 0 and 1
 
     ops.fix(1, 1, 1)
     ops.mass(4, 100.0, 100.0)
@@ -54,11 +54,10 @@ else:
     ops.system('MPIDiagonal')  # Can use Mumps here but not sure if it scales as well
     ops.integrator('ExplicitDifference')
 ops.analysis('Transient')
-for i in range(30):
-    print(f'######################################## run {i} ##')
-    ops.analyze(1, 0.000001)
+for i in range(3000):
+    # print(f'######################################## run {i} ##')
+    ops.analyze(1, 0.00001)
 print('PPP')
-ops.analyze(20, 0.00001)
 
 print(pid, ' Node 4: ', [ops.nodeCoord(4), ops.nodeDisp(4)])
 print(pid, " COMPLETED")

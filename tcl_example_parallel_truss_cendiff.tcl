@@ -39,10 +39,11 @@ constraints Transformation
 numberer ParallelPlain
 test NormDispIncr 1e-6 6 2
 algorithm Linear
-system MPIDiagonal
-integrator ExplicitDifference
+system Mumps
+integrator CentralDifference
 analysis Transient
-for {set k 0} {$k < 3000} {incr k 1} {
+# one less step for cen-diff
+for {set k 0} {$k < 2999} {incr k 1} {
     analyze 1 0.00001
 }
 
