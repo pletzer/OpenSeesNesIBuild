@@ -98,8 +98,8 @@ LAPACKdir       =
 SUPERLUdir      = $(HOME)/OTHER/SuperLU_5.1.1/SRC
 SUPERLU_DISTdir = $(HOME)/OTHER/SuperLU_DIST_4.3/SRC
 ARPACKdir       = $(HOME)/OTHER/ARPACK
-UMFPACKdir      = $(HOME)/OTHER/UMFPACK
-METISdir        = $(HOME)/OTHER/METIS
+UMFPACKdir      = 
+METISdir        = 
 AMDdir	        = $(HOME)/OTHER/AMD
 CSPARSEdir      = $(HOME)/OTHER/CSPARSE
 ITPACKdir       = $(HOME)/OTHER/ITPACK
@@ -153,7 +153,7 @@ BLAS_LIBRARY    =
 CBLAS_LIBRARY   =
 SUPERLU_LIBRARY = $(HOME)/lib/libSuperLU.a
 ARPACK_LIBRARY  = $(HOME)/lib/libArpack.a
-UMFPACK_LIBRARY = $(HOME)/lib/libUmfpack.a
+UMFPACK_LIBRARY = -lumfpack
 METIS_LIBRARY   =
 AMD_LIBRARY	    = $(HOME)/lib/libAMD.a
 ITPACK_LIBRARY  = $(HOME)/lib/libItpack.a
@@ -183,7 +183,6 @@ WIPE_LIBS = $(FE_LIBRARY) \
             $(CBLAS_LIBRARY) \
             $(SUPERLU_LIBRARY) \
             $(ARPACK_LIBRARY) \
-            $(UMFPACK_LIBRARY) \
             $(AMD_LIBRARY) \
             $(METIS_LIBRARY) \
             $(ITPACK_LIBRARY) \
