@@ -1,5 +1,7 @@
-# import custom_openseespy.opensees as ops
-import opensees as ops
+try:
+    import custom_openseespy.opensees as ops
+except:
+    import opensees as ops
 
 pid = ops.getPID()
 print('pid: ', pid)
