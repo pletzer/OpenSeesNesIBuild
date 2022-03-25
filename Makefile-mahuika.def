@@ -51,9 +51,6 @@ INTERPRETER_LANGUAGE = PYTHON
 
 HOME = ${CHOME}
 
-PROGRAMMING_MODE = SEQUENTIAL
-#PROGRAMMING_MODE = PARALLEL
-
 PROGRAMMING_MODE = PARALLEL_INTERPRETERS
 
 OpenSees_PROGRAM = $(HOME)/bin/OpenSees
@@ -64,8 +61,8 @@ PROGRAMMING_FLAG = -D_PARALLEL_PROCESSING
 endif
 
 ifeq ($(PROGRAMMING_MODE), PARALLEL_INTERPRETERS)
-OpenSees_PROGRAM = $(HOME)/bin/OpenSeesMP
-PROGRAMMING_FLAG = -D_PARALLEL_INTERPRETERS
+  OpenSees_PROGRAM = $(HOME)/bin/OpenSeesMP
+  PROGRAMMING_FLAG = -D_PARALLEL_INTERPRETERS
 endif
 
 OPERATING_SYSTEM = LINUX
@@ -95,37 +92,22 @@ FE	 = $(HOME)/SRC
 BLASdir         =
 CBLASdir        =
 LAPACKdir       =
-SUPERLUdir      = $(HOME)/OTHER/SuperLU_5.1.1/SRC
+SUPERLUdir      =
 SUPERLU_DISTdir = $(HOME)/OTHER/SuperLU_DIST_4.3/SRC
-ARPACKdir       = $(HOME)/OTHER/ARPACK
-UMFPACKdir      = $(HOME)/OTHER/UMFPACK
-METISdir        = $(HOME)/OTHER/METIS
-AMDdir	        = $(HOME)/OTHER/AMD
+ARPACKdir       =
+UMFPACKdir      = 
+METISdir        = 
+AMDdir	        =
 CSPARSEdir      = $(HOME)/OTHER/CSPARSE
 ITPACKdir       = $(HOME)/OTHER/ITPACK
 SRCdir          = $(HOME)/SRC
 PYdir          = $(HOME)/SRC/interpreter
 
 
-DIRS = $(SUPERLUdir) \
-       $(SUPERLU_DISTdir) \
-       $(ARPACKdir) \
-       $(UMFPACKdir) \
-       $(AMDdir) \
+DIRS = $(SUPERLU_DISTdir) \
        $(CSPARSEdir) \
        $(ITPACKdir) \
        $(SRCdir)
-
-ifeq ($(PROGRAMMING_MODE), SEQUENTIAL)
-DIRS = $(SUPERLUdir) \
-       $(ARPACKdir) \
-       $(UMFPACKdir) \
-       $(METISdir) \
-       $(AMDdir) \
-       $(CSPARSEdir) \
-       $(ITPACKdir) \
-       $(SRCdir)
-endif
 
 # %-------------------------------------------------------%
 # | SECTION 3: LIBRARIES                                  |
@@ -151,14 +133,14 @@ BJMISC_LIBRARY  = $(HOME)/lib/libBJmisc.a  # BJ_UCD jeremic@ucdavis.edu
 LAPACK_LIBRARY  =
 BLAS_LIBRARY    = 
 CBLAS_LIBRARY   =
-SUPERLU_LIBRARY = $(HOME)/lib/libSuperLU.a
-ARPACK_LIBRARY  = $(HOME)/lib/libArpack.a
-UMFPACK_LIBRARY = $(HOME)/lib/libUmfpack.a
+SUPERLU_LIBRARY = $(EBROOTSUPERLU)/lib64/libsuperlu.so
+ARPACK_LIBRARY  = $(EBROOTARPACKMINNG)/lib64/libarpack.so
+UMFPACK_LIBRARY = -lumfpack
 METIS_LIBRARY   =
-AMD_LIBRARY	    = $(HOME)/lib/libAMD.a
+AMD_LIBRARY	    = -lamd
 ITPACK_LIBRARY  = $(HOME)/lib/libItpack.a
-CSPARSE_LIBRARY = $(HOME)/lib/libcsparse.a
-TCL_LIBRARY     = -framework Tcl -framework Tk
+CSPARSE_LIBRARY = $(HOME)/lib/libcsparse.a  # should be able to use SuiteSparse copy instead
+TCL_LIBRARY     = $(EBROOTTCL)/lib/libtcl8.6.so
 TCL_DIST_LIBRARY = $(HOME)/lib/libOpenSeesTclCommands.a
 
 
@@ -167,25 +149,11 @@ DISTRIBUTED_SUPERLU_LIBRARY = $(HOME)/lib/libDistributedSuperLU.a
 BLITZ_LIBRARY = $(HOME)/blitz/lib/libblitz.a
 GRAPHIC_LIBRARY     =
 
-ifeq ($(PROGRAMMING_MODE), SEQUENTIAL)
-DISTRIBUTED_SUPERLU_LIBRARY =
-SUPERLU_LIBRARY = $(HOME)/lib/libSuperLU.a
-METIS_LIBRARY   = $(HOME)/lib/libMetis.a
-endif
-
 # WATCH OUT .. These libraries are removed when 'make wipe' is invoked.
 WIPE_LIBS = $(FE_LIBRARY) \
             $(NDARRAY_LIBRARY) \
             $(MATMOD_LIBRARY) \
             $(BJMISC_LIBRARY) \
-            $(LAPACK_LIBRARY) \
-            $(BLAS_LIBRARY) \
-            $(CBLAS_LIBRARY) \
-            $(SUPERLU_LIBRARY) \
-            $(ARPACK_LIBRARY) \
-            $(UMFPACK_LIBRARY) \
-            $(AMD_LIBRARY) \
-            $(METIS_LIBRARY) \
             $(ITPACK_LIBRARY) \
             $(CSPARSE_LIBRARY) \
             $(RELIABILITY_LIBRARY) \
@@ -204,7 +172,7 @@ WIPE_LIBS = $(FE_LIBRARY) \
 
 CC++  = mpicxx -std=c++14
 CC    = mpicc  -std=c18 -Wimplicit-function-declaration
-FC	  = mpif90
+FC	  = gfortran
 
 LINKER    = $(CC++)
 LINKFLAGS =

@@ -47,19 +47,6 @@ Now build:
 make python -j 4
 ```
 
-Test that you can import the `opensees` module:
-```
-export PYTHONPATH=$(pwd)/SRC/interpreter/:$PYTHONPATH
-python -c "import opensees"
-```
-
-Test that the parallel (MP) functionality works
-```
-cp ../OpenSeesNesIBuild/example_mpi_paralleltruss_explicit.py .
-cp ../OpenSeesNesIBuild/run_p2nt.sl .
-sbatch run_p2nt.sl example_mpi_paralleltruss_explicit.py
-```
-
 # Installing the Python OpenSees package
 
 ```
@@ -77,6 +64,10 @@ cd OpenSeesNesIBuild
 srun --ntasks=2 python example_mpi_paralleltruss_explicit.py
 ```
 
+To test that the parallel MUMPS solver works:
+```
+srun --ntasks=2 python example_mpi_paralleltruss_example_mpi_paralleltruss_cen_diff.py
+```
 
 # Error if rebuilding
 
