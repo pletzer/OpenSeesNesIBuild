@@ -66,7 +66,7 @@ srun --ntasks=2 python example_mpi_paralleltruss_explicit.py
 
 To test that the parallel MUMPS solver works:
 ```
-srun --ntasks=2 python example_mpi_paralleltruss_example_mpi_paralleltruss_cen_diff.py
+srun --ntasks=2 python example_mpi_paralleltruss_cen_diff.py
 ```
 
 # Error if rebuilding
