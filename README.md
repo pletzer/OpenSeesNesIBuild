@@ -69,6 +69,12 @@ To test that the parallel MUMPS solver works:
 srun --ntasks=2 python example_mpi_paralleltruss_cen_diff.py
 ```
 
+More tests:
+```
+srun --ntasks=2 python speed_test.py central_difference 2
+srun --ntasks=2 python speed_test.py explicit_difference 2
+```
+
 # Error if rebuilding
 
 UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command
