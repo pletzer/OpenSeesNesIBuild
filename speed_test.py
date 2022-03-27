@@ -1,7 +1,7 @@
 import os
 import numpy as np
-import pymetis
-from pymetis._internal import part_graph  # always do this before importing openseespy
+#import pymetis
+#from pymetis._internal import part_graph  # always do this before importing openseespy
 
 import sfsimodels as sm
 import o3seespy as o3
