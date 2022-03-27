@@ -237,59 +237,59 @@ for zz in range(femesh_nnz - 1):
                 eles.append(o3.element.SSPbrick(osi, nodes, soil_mat, 0.0, -grav, 0.0))
 
 
-# #%%
-# print('wiping analysis settings')
-# o3.wipe_analysis(osi)
-# # # Analysis settings
-# o3.constraints.Transformation(osi)
-# o3.test.NormDispIncr(osi, tol=1.0e-5, max_iter=20, p_flag=0, n_type=0)
-# print('apply numberer')
-#o3.numberer.apply_rcm(osi)
-# o3.rayleigh.Rayleigh(osi, alpha_m=a0, beta_k=0.0, beta_k_init=a1, beta_k_comm=0.0)
-# o3.algorithm.Linear(osi, factor_once=True)
-# if etype == 'implicit':
-#     o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
-#     o3.integrator.Newmark(osi, 0.5, 0.25)
-# else:
-#     if etype == 'newmark_explicit':
-#         o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
-#         o3.integrator.NewmarkExplicit(osi, gamma=0.5)
-#     elif etype == 'central_difference':
-#         o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
-#         o3.integrator.CentralDifference(osi)
-#     elif etype == 'explicit_difference':
-#         o3.system.MPIDiagonal(osi)
-#         o3.integrator.ExplicitDifference(osi)
-#     else:
-#         raise ValueError(etype)
-# explicit_dt = 0.9 * min_dt
-# ndp = np.ceil(np.log10(explicit_dt))
-# if 0.5 * 10 ** ndp < explicit_dt:
-#     dt = 0.5 * 10 ** ndp
-# elif 0.2 * 10 ** ndp < explicit_dt:
-#     dt = 0.2 * 10 ** ndp
-# elif 0.1 * 10 ** ndp < explicit_dt:
-#     dt = 0.1 * 10 ** ndp
-# else:
-#     raise ValueError(explicit_dt, 0.1 * 10 ** ndp)
-# o3.analysis.Transient(osi)
-# rnodes = sn[int(femesh.nnx / 2), :, int(femesh_nnz / 2)]
+#%%
+print('wiping analysis settings')
+o3.wipe_analysis(osi)
+# # Analysis settings
+o3.constraints.Transformation(osi)
+o3.test.NormDispIncr(osi, tol=1.0e-5, max_iter=20, p_flag=0, n_type=0)
+print('apply numberer')
+o3.numberer.apply_rcm(osi)
+o3.rayleigh.Rayleigh(osi, alpha_m=a0, beta_k=0.0, beta_k_init=a1, beta_k_comm=0.0)
+o3.algorithm.Linear(osi, factor_once=True)
+if etype == 'implicit':
+    o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
+    o3.integrator.Newmark(osi, 0.5, 0.25)
+else:
+    if etype == 'newmark_explicit':
+        o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
+        o3.integrator.NewmarkExplicit(osi, gamma=0.5)
+    elif etype == 'central_difference':
+        o3.system.apply_mumps_or(osi, o3.system.SparseSYM, icntl14=200)
+        o3.integrator.CentralDifference(osi)
+    elif etype == 'explicit_difference':
+        o3.system.MPIDiagonal(osi)
+        o3.integrator.ExplicitDifference(osi)
+    else:
+        raise ValueError(etype)
+explicit_dt = 0.9 * min_dt
+ndp = np.ceil(np.log10(explicit_dt))
+if 0.5 * 10 ** ndp < explicit_dt:
+    dt = 0.5 * 10 ** ndp
+elif 0.2 * 10 ** ndp < explicit_dt:
+    dt = 0.2 * 10 ** ndp
+elif 0.1 * 10 ** ndp < explicit_dt:
+    dt = 0.1 * 10 ** ndp
+else:
+    raise ValueError(explicit_dt, 0.1 * 10 ** ndp)
+o3.analysis.Transient(osi)
+rnodes = sn[int(femesh.nnx / 2), :, int(femesh_nnz / 2)]
 
-# rnodes = [node for node in rnodes if node is not None]
-# with open(f'{out_folder}{prefix}-y-rnodes-pid{pid}.txt', 'w') as rfile:
-#     rfile.write('\n'.join([str(node.y) for node in rnodes]))
-# #o3.recorder.NodesToFile(osi, f'{out_folder}{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
-# print('Start analysis')
-# if pid == 0:
-#     with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
-#         tfile.write(f'init-os-delta: {time.time()-start_time}\n')
-# #%%
-# if o3.analyze(osi, 1, dt):
-#     if pid == 0:
-#         with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
-#             tfile.write('MODEL FAILED\n')
-#     print('MODEL FAILED')
-#
-# if pid == 0:
-#     with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
-#         tfile.write(f'complete-delta: {time.time()-start_time}\n')
+rnodes = [node for node in rnodes if node is not None]
+with open(f'{out_folder}{prefix}-y-rnodes-pid{pid}.txt', 'w') as rfile:
+    rfile.write('\n'.join([str(node.y) for node in rnodes]))
+#o3.recorder.NodesToFile(osi, f'{out_folder}{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
+print('Start analysis')
+if pid == 0:
+    with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+        tfile.write(f'init-os-delta: {time.time()-start_time}\n')
+#%%
+if o3.analyze(osi, 1, dt):
+    if pid == 0:
+        with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+            tfile.write('MODEL FAILED\n')
+    print('MODEL FAILED')
+
+if pid == 0:
+    with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+        tfile.write(f'complete-delta: {time.time()-start_time}\n')
