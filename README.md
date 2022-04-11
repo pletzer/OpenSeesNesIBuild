@@ -22,29 +22,28 @@ cp Makefile-mahuika.def ../OpenSees/Makefile.def
 If on mahuika, load a few modules
 ```
 ml purge
-. start_ml_MM.sh
+source start_mahuika.sh
 ```
 
 Decide which python to use, e.g.
 ```
-ml Miniconda3
+ml Python/3.9.9-gimkl-2020a
 ```
 
 Compile OpenSees for Python
 ```
 cd ../OpenSees/
-export CHOME=$(pwd)
 mkdir lib
 ```
 
 To clean the directory from a previous build (optional):
 ```
-make wipe
+make wipe CHOME=$(pwd)
 ```
 
 Now build:
 ```
-make python -j 4
+make python -j 4 CHOME=$(pwd)
 ```
 
 # Installing the Python OpenSees package
