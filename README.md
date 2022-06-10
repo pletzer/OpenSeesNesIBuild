@@ -74,6 +74,12 @@ srun --ntasks=2 python speed_test.py central_difference 2
 srun --ntasks=2 python speed_test.py explicit_difference 2
 ```
 
+Note: you may have to 
+```
+pip install sfsimodels --user
+pip install o3seespy --user
+```
+
 # Error if rebuilding
 
 UNANDESmaterials not listed in OpenSees/SRC/material/nD/Makefile wipe command
