@@ -37,6 +37,10 @@ if name == '<input>':
     name = 'free_vib_fe3d_elastic'
 version = 'v7'
 out_folder = f'fe3d/{name}/{version}/'
+# allow the user to specify the output folder, to avoid multiple runs to collide
+if len(sys.argv) >= 4:
+    out_folder = sys.argv[3]
+
 print('out_folder: ', out_folder)
 if pid == 0:
     if not os.path.exists(out_folder):
@@ -55,7 +59,7 @@ prefix = f'MW{sys_w}-np{nprocs}'
 
 if pid == 0:
     start_time = time.time()
-    with open(f'{out_folder}{prefix_w_e}-time.txt', 'w') as tfile:
+    with open(f'{out_folder}/{prefix_w_e}-time.txt', 'w') as tfile:
         tfile.write(f'start: {time.time()}\n')
 
 
@@ -96,7 +100,7 @@ fem = sm.num.mesh.construct_femesh_orth(tds, dy_target=dy)
 if pid == 0:
     eo = sm.Output()
     eo.add_to_dict(tds)
-    eo.to_file(out_folder + f'{prefix}-ecp.json')
+    eo.to_file(f'{out_folder}/{prefix}-ecp.json')
 
 # Determine crtical time step
 sp.gen_split(props=['unit_mass', 'shear_vel', 'poissons_ratio', 'g_mod'])
@@ -212,7 +216,7 @@ ntags = np.reshape(np.arange(1, nx * ny * nz + 1, dtype=np.int32), [nx, ny, nz])
 tot_tags = int(nx * ny * nz + 1)
 
 if pid == 0:
-    with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+    with open(f'{out_folder}/{prefix_w_e}-time.txt', 'a') as tfile:
         tfile.write(f'init-delta: {time.time()-start_time}\n')
 
 osi = o3.OpenSeesInstance(ndm=3, ndf=3, state=state, mp=mp)
@@ -279,20 +283,20 @@ o3.analysis.Transient(osi)
 rnodes = sn[int(femesh.nnx / 2), :, int(femesh_nnz / 2)]
 
 rnodes = [node for node in rnodes if node is not None]
-with open(f'{out_folder}{prefix}-y-rnodes-pid{pid}.txt', 'w') as rfile:
+with open(f'{out_folder}/{prefix}-y-rnodes-pid{pid}.txt', 'w') as rfile:
     rfile.write('\n'.join([str(node.y) for node in rnodes]))
-o3.recorder.NodesToFile(osi, f'{out_folder}{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
+o3.recorder.NodesToFile(osi, f'{out_folder}/{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
 print('Start analysis')
 if pid == 0:
-    with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+    with open(f'{out_folder}/{prefix_w_e}-time.txt', 'a') as tfile:
         tfile.write(f'init-os-delta: {time.time()-start_time}\n')
 #%%
 if o3.analyze(osi, 10000, dt):
     if pid == 0:
-        with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+        with open(f'{out_folder}/{prefix_w_e}-time.txt', 'a') as tfile:
             tfile.write('MODEL FAILED\n')
     print('MODEL FAILED')
 
 if pid == 0:
-    with open(f'{out_folder}{prefix_w_e}-time.txt', 'a') as tfile:
+    with open(f'{out_folder}/{prefix_w_e}-time.txt', 'a') as tfile:
         tfile.write(f'complete-delta: {time.time()-start_time}\n')
