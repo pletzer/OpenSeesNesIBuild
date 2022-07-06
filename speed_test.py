@@ -20,6 +20,12 @@ if etype not in allowed_etypes:
     raise ValueError(f'etype={etype}, must be one of: ' + ','.join(allowed_etypes))
 sys_w = int(sys.argv[2])
 
+# allow one to set the output directy
+version = 'v4_intel'
+out_folder = f'{version}/'
+if len(sys.argv) >= 4:
+    out_folder = sys.argv[3] + '/'
+
 nprocs = o3.mp.get_np()
 pid = o3.mp.get_pid()
 o3.wipe()
@@ -28,8 +34,6 @@ name = os.path.splitext(os.path.basename(os.path.realpath(__file__)))[0]
 name = name.replace('flat_', '')
 if name == '<input>':
     name = 'free_vib_fe3d_elastic'
-version = 'v4_intel'
-out_folder = f'{version}/'
 print('out_folder: ', out_folder)
 if pid == 0:
     if not os.path.exists(out_folder):
