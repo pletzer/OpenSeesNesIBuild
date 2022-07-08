@@ -27,7 +27,7 @@ source start_mahuika.sh
 
 Decide which python to use, e.g.
 ```
-ml Python/3.9.9-gimkl-2020a
+ml Python/3.10.5-gimkl-2022a
 ```
 
 Compile OpenSees for Python
@@ -76,6 +76,7 @@ srun --ntasks=2 python speed_test.py explicit_difference 2
 
 Note: you may have to 
 ```
+pip install pymetis --user
 pip install sfsimodels --user
 pip install o3seespy --user
 ```
