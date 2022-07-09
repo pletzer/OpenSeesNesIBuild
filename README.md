@@ -10,7 +10,7 @@ git clone https://github.com/OpenSees/OpenSees
 
 Clone this repo
 ```
-git clone git@github.com:pletzer/OpenSeesNesIBuild.git
+git clone https://github.com/pletzer/OpenSeesNesIBuild.git
 cd OpenSeesNesIBuild
 ```
 
@@ -49,6 +49,7 @@ make python -j 4 CHOME=$(pwd)
 # Installing the Python OpenSees package
 
 ```
+cd ..
 cp OpenSeesNesIBuild/setup.py OpenSees/SRC/interpreter/
 mkdir -p OpenSees/SRC/interpreter/custom_openseespy
 mv OpenSees/SRC/interpreter/opensees.so OpenSees/SRC/interpreter/custom_openseespy/
