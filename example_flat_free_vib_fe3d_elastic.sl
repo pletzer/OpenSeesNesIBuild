@@ -3,6 +3,7 @@
 #SBATCH --ntasks=16
 #SBATCH --time=00:10:00
 #SBATCH --cpus-per-task 1
+#SBATCH --account=nesi03638
 ## END HEADER
 #
 method="$1"
