@@ -285,7 +285,7 @@ rnodes = sn[int(femesh.nnx / 2), :, int(femesh_nnz / 2)]
 rnodes = [node for node in rnodes if node is not None]
 with open(f'{out_folder}/{prefix}-y-rnodes-pid{pid}.txt', 'w') as rfile:
     rfile.write('\n'.join([str(node.y) for node in rnodes]))
-o3.recorder.NodesToFile(osi, f'{out_folder}/{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
+#o3.recorder.NodesToFile(osi, f'{out_folder}/{prefix_w_e}-nfr-pid{pid}.txt', rnodes, [o3.cc.DOF2D_Y], 'disp')
 print('Start analysis')
 if pid == 0:
     with open(f'{out_folder}/{prefix_w_e}-time.txt', 'a') as tfile:
